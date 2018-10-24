@@ -53,14 +53,14 @@ public class PlayerMoveTest {
     final Player pippoAtStart = new Player("Pippo", List.of(dice3, dice1), Start.getInstance());
     final Player plutoAtStart = new Player("Pluto", List.of(dice1, dice1), Start.getInstance());
 
-    final Task<Turn> pippoPlay = new Turn(pippoAtStart).combine(scenario);
-    final Task<Turn> plutoPLay = new Turn(plutoAtStart).combine(scenario);
+    final Task<Turn> pippoPlay = new Turn(pippoAtStart).playTurn(scenario);
+    final Task<Turn> plutoPLay = new Turn(plutoAtStart).playTurn(scenario);
 
     Assert.assertEquals("Pippo rolls 3, 1. Pippo moves from Start to 4", pippoPlay.getLogHistory().last());
     Assert.assertEquals("Pluto rolls 1, 1. Pluto moves from Start to 2", plutoPLay.getLogHistory().last());
 
     final Player pippoAt4 = new Player("Pippo", List.of(dice1, dice3), new NoActionCell(4));
-    final Task<Turn> pippoPlayAgain = new Turn(pippoAt4).combine(scenario);
+    final Task<Turn> pippoPlayAgain = new Turn(pippoAt4).playTurn(scenario);
     Assert.assertEquals("Pippo rolls 1, 3. Pippo moves from 4 to 8", pippoPlayAgain.getLogHistory().last());
 
   }
@@ -71,7 +71,7 @@ public class PlayerMoveTest {
     Dice dice2 = new Dice(() -> 1);
     final List<Dice> dice11 = List.of(dice1, dice2);
     final Player pippoAt4Position = new Player("Pippo", dice11, new NoActionCell(4));
-    final Task<Turn> combine = new Turn(pippoAt4Position).combine(scenario);
+    final Task<Turn> combine = new Turn(pippoAt4Position).playTurn(scenario);
     Assert.assertEquals("Pippo rolls 1, 1. Pippo moves from 4 to The Bridge. Pippo jumps to 12", combine.getLogHistory().last());
   }
 
@@ -81,7 +81,7 @@ public class PlayerMoveTest {
     Dice dice2 = new Dice(() -> 1);
     final List<Dice> dice11 = List.of(dice1, dice2);
     final Player pippo = new Player("Pippo", dice11, new NoActionCell(3));
-    final Task<Turn> combine = new Turn(pippo).combine(scenario);
+    final Task<Turn> combine = new Turn(pippo).playTurn(scenario);
     Assert.assertEquals("Pippo rolls 1, 1. Pippo moves from 3 to 5, The Goose. Pippo moves again and goes to 7", combine.getLogHistory().last());
   }
 
@@ -90,7 +90,7 @@ public class PlayerMoveTest {
     Dice dice2 = new Dice(() -> 2);
     final List<Dice> dice22 = List.of(dice2, dice2);
     final Player pippo = new Player("Pippo", dice22, new NoActionCell(10));
-    final Task<Turn> combine = new Turn(pippo).combine(scenario);
+    final Task<Turn> combine = new Turn(pippo).playTurn(scenario);
     Assert.assertEquals("Pippo rolls 2, 2. Pippo moves from 10 to 14, The Goose. Pippo moves again and goes to 18, The Goose. Pippo moves again and goes to 22",
         combine.getLogHistory().last());
   }
