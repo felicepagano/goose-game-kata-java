@@ -12,7 +12,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * The Turn class represents an instant when the player has played in it's turn.
+ * The Turn class represents an instant when the player has played in it's turn.action
  */
 class Turn {
 
@@ -52,7 +52,18 @@ class Turn {
     }
   }
 
-  Task<Turn> combine(Function<Integer, Cell> scenario) {
+  /**
+   * Generate a Turn from the current status.
+   * This method combine the player's action in order to:
+   * <ul>
+   *   <li>launch a list of dice</li>
+   *   <li>move the player on a cell</li>
+   *   <li>follow the cell rule recursively</li>
+   * </ul>
+   * @param scenario is used to generate the cells.
+   * @return
+   */
+  Task<Turn> playTurn(Function<Integer, Cell> scenario) {
     int rolledDiceSum = this.rollDice().getExecutionLastValue().sum().intValue();
     return this.rollDice().merge((List<Integer> diceSum) -> move(diceSum, scenario)).merge(cell -> this.followRule(cell, rolledDiceSum, scenario)).to(cell -> {
       if(cell instanceof Win) {

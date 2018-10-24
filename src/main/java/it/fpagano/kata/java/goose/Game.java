@@ -74,6 +74,11 @@ public class Game {
     }), args.tail());
   }
 
+  /**
+   * Generate recursively a list of turn that players play from a previous state until one player win.
+   * @param t
+   * @return
+   */
   private List<Task<Turn>> generateTurn(List<Task<Turn>> t) {
 
     if(t.isEmpty())
@@ -85,7 +90,7 @@ public class Game {
       return t;
     }
 
-    return generateTurn(t.map(turnTask -> turnTask.merge(turn -> turn.combine(scenario))));
+    return generateTurn(t.map(turnTask -> turnTask.merge(turn -> turn.playTurn(scenario))));
 
   }
 
