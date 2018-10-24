@@ -30,11 +30,11 @@ public class Task<T> {
     return new Task<>(Tuple.of(List.of(log), s));
   }
 
-  public T getExecutionLastValue() {
+  T getExecutionLastValue() {
     return logsHistoryLastExecution._2;
   }
 
-  public List<String> getLogHistory() {
+  List<String> getLogHistory() {
     return logsHistoryLastExecution._1;
   }
 
@@ -44,7 +44,7 @@ public class Task<T> {
    * @param t
    * @return
    */
-  public <P> Task<P> merge(Function<T, Task<P>> t) {
+  <P> Task<P> merge(Function<T, Task<P>> t) {
     final Task<P> apply = t.apply(this.getExecutionLastValue());
     return new Task<>(Tuple.of(this.getLogHistory().appendAll(apply.getLogHistory()), apply.getExecutionLastValue()));
   }
@@ -56,7 +56,7 @@ public class Task<T> {
    * @param <P>
    * @return
    */
-  public <P> Task<P> to(Function<T, P> f) {
+  <P> Task<P> to(Function<T, P> f) {
     return Task.of(f.apply(this.getExecutionLastValue()), getLogHistory()
         //.append("\n")
         .collect(Collectors.joining(". "))

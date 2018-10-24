@@ -58,7 +58,7 @@ public class Game {
 
   }
 
-  public Task<Set<String>> setPlayer(List<String> args) {
+  Task<Set<String>> setPlayer(List<String> args) {
     return setPlayerRecursive(Task.of(LinkedHashSet.empty(), ""), args);
   }
 

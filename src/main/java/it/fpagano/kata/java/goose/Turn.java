@@ -11,12 +11,15 @@ import java.time.Instant;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * The Turn class represents an instant when the player has played in it's turn.
+ */
 class Turn {
 
   private final Player player;
   private final Instant ts;
 
-  public Turn(Player player) {
+  Turn(Player player) {
     this.player = player;
     this.ts = Instant.now();
   }
@@ -49,7 +52,7 @@ class Turn {
     }
   }
 
-  public Task<Turn> combine(Function<Integer, Cell> scenario) {
+  Task<Turn> combine(Function<Integer, Cell> scenario) {
     int rolledDiceSum = this.rollDice().getExecutionLastValue().sum().intValue();
     return this.rollDice().merge((List<Integer> diceSum) -> move(diceSum, scenario)).merge(cell -> this.followRule(cell, rolledDiceSum, scenario)).to(cell -> {
       if(cell instanceof Win) {
@@ -59,11 +62,11 @@ class Turn {
     });
   }
 
-  public boolean isPlayerWinInThisTurn() {
+  boolean isPlayerWinInThisTurn() {
     return player instanceof WinningPlayer;
   }
 
-  public Player getPlayer() {
+  Player getPlayer() {
     return player;
   }
 
