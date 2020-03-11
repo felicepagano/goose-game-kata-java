@@ -1,6 +1,7 @@
 package it.fpagano.kata.java.goose.model.cell;
 
 import java.util.function.Function;
+import java.util.function.IntFunction;
 
 public class Bridge implements Cell {
 
@@ -11,7 +12,7 @@ public class Bridge implements Cell {
   }
 
   @Override
-  public Function<Integer, Cell> rule(Function<Integer, Cell> scenario) {
+  public Function<Integer, Cell> rule(IntFunction<Cell> scenario) {
     return i -> scenario.apply(12);
   }
 

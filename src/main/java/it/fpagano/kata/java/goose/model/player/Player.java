@@ -6,7 +6,7 @@ import it.fpagano.kata.java.goose.model.cell.Start;
 import it.fpagano.kata.java.goose.model.dice.Dice;
 import it.fpagano.kata.java.goose.model.dice.PseudoRandomDice;
 import java.util.Objects;
-import java.util.function.Function;
+import java.util.function.IntFunction;
 
 public class Player {
 
@@ -36,7 +36,7 @@ public class Player {
     return dice.map(Dice::generate);
   }
 
-  public Cell move(int diceSum, Function<Integer, Cell> scenario) {
+  public Cell move(int diceSum, IntFunction<Cell> scenario) {
     return scenario.apply(diceSum + position());
   }
 

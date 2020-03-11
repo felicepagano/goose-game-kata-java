@@ -12,13 +12,13 @@ import it.fpagano.kata.java.goose.model.cell.NoActionCell;
 import it.fpagano.kata.java.goose.model.cell.Start;
 import it.fpagano.kata.java.goose.model.cell.Win;
 import it.fpagano.kata.java.goose.model.player.Player;
-import java.util.function.Function;
+import java.util.function.IntFunction;
 import java.util.stream.Collectors;
 
 public class Game {
 
   public static final int NUMBER_OF_CELLS = 63;
-  public static final Function<Integer, Cell> scenario = idx -> {
+  public static final IntFunction<Cell> scenario = idx -> {
     if(idx > NUMBER_OF_CELLS) {
       return new Bounces(idx);
     }
