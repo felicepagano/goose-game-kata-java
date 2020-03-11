@@ -8,12 +8,15 @@ import org.junit.Test;
 
 public class AddPlayerTest {
 
+  public static final String PIPPO = "Pippo";
+  public static final String PLUTO = "Pluto";
+
   @Test
   public void whenAddFirstPlayer_AMessageMustBeGenerated() {
     // given:
     Game g = new Game();
     // when:
-    final Task<Set<String>> setTask = g.setPlayer(List.of("Pippo"));
+    final Task<Set<String>> setTask = g.setPlayer(List.of(PIPPO));
 
     // then:
     assertEquals("players: Pippo", setTask.getLogHistory().last());
@@ -22,14 +25,14 @@ public class AddPlayerTest {
   @Test
   public void whenAddASecondPlayer_AMessageMustBeGenerated() {
     Game g = new Game();
-    final Task<Set<String>> setTask = g.setPlayer(List.of("Pippo", "Pluto"));
+    final Task<Set<String>> setTask = g.setPlayer(List.of(PIPPO, PLUTO));
     assertEquals("players: Pippo, Pluto", setTask.getLogHistory().last());
   }
 
   @Test
   public void whenAPlayerAlreadyExists_FireMessage() {
     Game g = new Game();
-    final Task<Set<String>> setTask = g.setPlayer(List.of("Pippo", "Pluto", "Pippo"));
+    final Task<Set<String>> setTask = g.setPlayer(List.of(PIPPO, PLUTO, PIPPO));
     assertEquals("Pippo: already existing player", setTask.getLogHistory().last());
   }
 

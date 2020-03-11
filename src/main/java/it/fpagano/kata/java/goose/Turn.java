@@ -9,6 +9,7 @@ import it.fpagano.kata.java.goose.model.player.Player;
 import it.fpagano.kata.java.goose.model.player.WinningPlayer;
 import java.time.Instant;
 import java.util.function.Function;
+import java.util.function.IntFunction;
 import java.util.stream.Collectors;
 
 /**
@@ -30,12 +31,12 @@ class Turn {
         Collectors.joining(", ")));
   }
 
-  private Task<Cell> move(List<Integer> diceSum, Function<Integer, Cell> scenario) {
+  private Task<Cell> move(List<Integer> diceSum, IntFunction<Cell> scenario) {
     final Cell move = player.move(diceSum.sum().intValue(), scenario);
     return Task.of(move, player.name + " moves from " + player.position + " to " + move);
   }
 
-  private Task<Cell> followRule(Cell cell, int sumDice, Function<Integer, Cell> scenario) {
+  private Task<Cell> followRule(Cell cell, int sumDice, IntFunction<Cell> scenario) {
     final Cell followedCellRule = cell.followRule(sumDice, scenario);
     if(followedCellRule == cell) {
       if(cell instanceof Win) {
@@ -63,7 +64,7 @@ class Turn {
    * @param scenario is used to generate the cells.
    * @return
    */
-  Task<Turn> playTurn(Function<Integer, Cell> scenario) {
+  Task<Turn> playTurn(IntFunction<Cell> scenario) {
     int rolledDiceSum = this.rollDice().getExecutionLastValue().sum().intValue();
     return this.rollDice().merge((List<Integer> diceSum) -> move(diceSum, scenario)).merge(cell -> this.followRule(cell, rolledDiceSum, scenario)).to(cell -> {
       if(cell instanceof Win) {
