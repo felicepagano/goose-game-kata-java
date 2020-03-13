@@ -1,5 +1,7 @@
 package it.fpagano.kata.java.goose;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import io.vavr.collection.List;
 import it.fpagano.kata.java.goose.model.cell.Bounces;
 import it.fpagano.kata.java.goose.model.cell.Bridge;
@@ -11,39 +13,33 @@ import it.fpagano.kata.java.goose.model.cell.Win;
 import it.fpagano.kata.java.goose.model.dice.Dice;
 import it.fpagano.kata.java.goose.model.player.Player;
 import java.util.function.IntFunction;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class PlayerMoveTest {
 
   public static final String PIPPO = "Pippo";
   public static final String PLUTO = "Pluto";
-  private IntFunction<Cell> scenario;
+  private static IntFunction<Cell> scenario;
   private static final int NUMBER_OF_CELLS = 63;
 
-  @Before
-  public void setUp() {
+  @BeforeAll
+  public static void setUp() {
     generateScenario();
   }
 
-  private void generateScenario() {
+  private static void generateScenario() {
     scenario = idx -> {
-      if(idx > NUMBER_OF_CELLS) {
+      if (idx > NUMBER_OF_CELLS) {
         return new Bounces(NUMBER_OF_CELLS);
       }
-      switch (idx) {
-        case 0: return Start.getInstance();
-        case 6: return new Bridge(idx);
-        case NUMBER_OF_CELLS: return Win.getInstance();
-        case 5:
-        case 9:
-        case 14:
-        case 18:
-        case 23:
-        case 27: return new Goose(idx);
-        default: return new NoActionCell(idx);
-      }
+      return switch (idx) {
+        case 0 -> Start.getInstance();
+        case 6 -> new Bridge(idx);
+        case NUMBER_OF_CELLS -> Win.getInstance();
+        case 5, 9, 14, 18, 23, 27 -> new Goose(idx);
+        default -> new NoActionCell(idx);
+      };
     };
   }
 
@@ -58,14 +54,14 @@ public class PlayerMoveTest {
     final Task<Turn> pippoPlay = new Turn(pippoAtStart).playTurn(scenario);
     final Task<Turn> plutoPLay = new Turn(plutoAtStart).playTurn(scenario);
 
-    Assert.assertEquals("Pippo rolls 3, 1. Pippo moves from Start to 4",
+    assertEquals("Pippo rolls 3, 1. Pippo moves from Start to 4",
         pippoPlay.getLogHistory().last());
-    Assert.assertEquals("Pluto rolls 1, 1. Pluto moves from Start to 2",
+    assertEquals("Pluto rolls 1, 1. Pluto moves from Start to 2",
         plutoPLay.getLogHistory().last());
 
     final Player pippoAt4 = new Player(PIPPO, List.of(dice1, dice3), new NoActionCell(4));
     final Task<Turn> pippoPlayAgain = new Turn(pippoAt4).playTurn(scenario);
-    Assert.assertEquals("Pippo rolls 1, 3. Pippo moves from 4 to 8",
+    assertEquals("Pippo rolls 1, 3. Pippo moves from 4 to 8",
         pippoPlayAgain.getLogHistory().last());
 
   }
@@ -77,7 +73,8 @@ public class PlayerMoveTest {
     final List<Dice> dice11 = List.of(dice1, dice2);
     final Player pippoAt4Position = new Player(PIPPO, dice11, new NoActionCell(4));
     final Task<Turn> combine = new Turn(pippoAt4Position).playTurn(scenario);
-    Assert.assertEquals("Pippo rolls 1, 1. Pippo moves from 4 to The Bridge. Pippo jumps to 12", combine.getLogHistory().last());
+    assertEquals("Pippo rolls 1, 1. Pippo moves from 4 to The Bridge. Pippo jumps to 12",
+        combine.getLogHistory().last());
   }
 
   @Test
@@ -87,7 +84,9 @@ public class PlayerMoveTest {
     final List<Dice> dice11 = List.of(dice1, dice2);
     final Player pippo = new Player(PIPPO, dice11, new NoActionCell(3));
     final Task<Turn> combine = new Turn(pippo).playTurn(scenario);
-    Assert.assertEquals("Pippo rolls 1, 1. Pippo moves from 3 to 5, The Goose. Pippo moves again and goes to 7", combine.getLogHistory().last());
+    assertEquals(
+        "Pippo rolls 1, 1. Pippo moves from 3 to 5, The Goose. Pippo moves again and goes to 7",
+        combine.getLogHistory().last());
   }
 
   @Test
@@ -96,7 +95,8 @@ public class PlayerMoveTest {
     final List<Dice> dice22 = List.of(dice2, dice2);
     final Player pippo = new Player(PIPPO, dice22, new NoActionCell(10));
     final Task<Turn> combine = new Turn(pippo).playTurn(scenario);
-    Assert.assertEquals("Pippo rolls 2, 2. Pippo moves from 10 to 14, The Goose. Pippo moves again and goes to 18, The Goose. Pippo moves again and goes to 22",
+    assertEquals(
+        "Pippo rolls 2, 2. Pippo moves from 10 to 14, The Goose. Pippo moves again and goes to 18, The Goose. Pippo moves again and goes to 22",
         combine.getLogHistory().last());
   }
 }

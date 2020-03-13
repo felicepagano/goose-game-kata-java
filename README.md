@@ -17,6 +17,6 @@ you must compile the code with mvn compile.
 
 The entire development was made with the following tools version:
 
-> java version "openjdk-ea 15-13-ea"
+> java version "openjdk version "14" 2020-03-17"
 
 > Apache Maven 3.6.3
