@@ -17,8 +17,9 @@ public interface Cell {
   }
 
   /**
-   * A function that represents the rule to apply where a player reach this cell.
-   * By default it return the same cell instance.
+   * A function that represents the rule to apply where a player reach this cell. By default it
+   * return the same cell instance. Identity.
+   *
    * @param scenario
    * @return
    */

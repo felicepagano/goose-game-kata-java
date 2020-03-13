@@ -9,6 +9,10 @@ public class Win implements Cell {
 
   private static final Win WIN_INSTANCE = new Win();
 
+  private Win() {
+
+  }
+
   public static Win getInstance() {
     return WIN_INSTANCE;
   }
