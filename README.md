@@ -10,14 +10,13 @@ To run the tests run in your preferred terminal the command `mvn test`.
 
 You can also run the application using maven with the following instruction: 
 
-`mvn exec:java -Dexec.mainClass="it.fpagano.kata.java.goose.Game" -Dexec.args="Pippo Pluto"` 
+`mvn exec:java` 
 
-where in the exec.args you can specify the name of the players.
-
-Remember that you must be in the root project folder in order to run maven.
+Remember that you must be in the root project folder in order to run maven and before mvn exec
+you must compile the code with mvn compile.
 
 The entire development was made with the following tools version:
 
-> java version "10.0.2"
+> java version "openjdk-ea 15-13-ea"
 
-> Apache Maven 3.5.4
+> Apache Maven 3.6.3

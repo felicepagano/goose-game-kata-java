@@ -50,13 +50,13 @@ public class Task<T> {
   }
 
   /**
-   * Transform a task to another one.
-   * Like map function.
+   * Transform a task to another one. Like map function.
+   *
    * @param f
    * @param <P>
    * @return
    */
-  <P> Task<P> to(Function<T, P> f) {
+  <P> Task<P> map(Function<T, P> f) {
     return Task.of(f.apply(this.getExecutionLastValue()), getLogHistory()
         //.append("\n")
         .collect(Collectors.joining(". "))

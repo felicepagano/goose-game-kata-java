@@ -15,7 +15,7 @@ public class WinnerPlayerTest {
     List<Dice> diceToWin = List.of(new Dice(() -> 1), new Dice(() -> 2));
     Player p = new Player("Pippo", diceToWin, new NoActionCell(60));
     final Turn turn = new Turn(p);
-    final Task<Turn> combine = turn.playTurn(Game.scenario);
+    final Task<Turn> combine = turn.playTurn(Game.officialScenario);
     Assert.assertTrue(combine.getExecutionLastValue().getPlayer() instanceof WinningPlayer);
     Assert.assertTrue(combine.getExecutionLastValue().isPlayerWinInThisTurn());
     Assert.assertEquals("Pippo rolls 1, 2. Pippo moves from 60 to 63. Pippo Wins!!",  combine.getLogHistory().last());
@@ -26,7 +26,7 @@ public class WinnerPlayerTest {
     List<Dice> diceToBounce = List.of(new Dice(() -> 3), new Dice(() -> 2));
     Player p = new Player("Pippo", diceToBounce, new NoActionCell(60));
     Turn t = new Turn(p);
-    final Task<Turn> combine = t.playTurn(Game.scenario);
+    final Task<Turn> combine = t.playTurn(Game.officialScenario);
     Assert.assertEquals("Pippo rolls 3, 2. Pippo moves from 60 to 63. Pippo bounces! Pippo returns to 61", combine.getLogHistory().last());
   }
 

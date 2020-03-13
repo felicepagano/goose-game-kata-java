@@ -18,34 +18,31 @@ import java.util.stream.Collectors;
 public class Game {
 
   public static final int NUMBER_OF_CELLS = 63;
-  public static final IntFunction<Cell> scenario = idx -> {
-    if(idx > NUMBER_OF_CELLS) {
+
+  public static final IntFunction<Cell> officialScenario = idx -> {
+    if (idx > NUMBER_OF_CELLS) {
       return new Bounces(idx);
     }
-    switch (idx) {
-      case 0: return Start.getInstance();
-      case 6: return new Bridge(idx);
-      case NUMBER_OF_CELLS: return Win.getInstance();
-      case 5:
-      case 9:
-      case 14:
-      case 18:
-      case 23:
-      case 27: return new Goose(idx);
-      default: return new NoActionCell(idx);
-    }
+
+    return switch (idx) {
+      case 0 -> Start.getInstance();
+      case 6 -> new Bridge(idx);
+      case NUMBER_OF_CELLS -> Win.getInstance();
+      case 5, 9, 14, 18, 23, 27 -> new Goose(idx);
+      default -> new NoActionCell(idx);
+    };
   };
 
   public static void main(String[] args) {
     Game g = new Game();
 
-    final Task<Set<String>> addPlayerTask = g
-        .setPlayer(List.of(args));
+    final Task<Set<String>> addPlayerTask = g.setPlayer(List.of(args));
 
-    final Task<Set<Turn>> to = addPlayerTask.to(strings -> strings.map(Player::new).map(Turn::new));
+    final Task<Set<Turn>> task = addPlayerTask.map(playerName ->
+        playerName.map(Player::new).map(Turn::new));
 
-    final List<String> logHistory = to.getLogHistory();
-    final List<Task<Turn>> turnTask = to.getExecutionLastValue().map(Task::of).toList();
+    final List<String> logHistory = task.getLogHistory();
+    final List<Task<Turn>> turnTask = task.getExecutionLastValue().map(Task::of).toList();
 
     final List<Task<Turn>> tasks = g.generateTurn(turnTask);
 
@@ -90,7 +87,7 @@ public class Game {
       return t;
     }
 
-    return generateTurn(t.map(turnTask -> turnTask.merge(turn -> turn.playTurn(scenario))));
+    return generateTurn(t.map(turnTask -> turnTask.merge(turn -> turn.playTurn(officialScenario))));
 
   }
 

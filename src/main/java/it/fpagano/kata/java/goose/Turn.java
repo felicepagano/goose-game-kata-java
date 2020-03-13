@@ -65,12 +65,13 @@ class Turn {
    */
   Task<Turn> playTurn(IntFunction<Cell> scenario) {
     int rolledDiceSum = this.rollDice().getExecutionLastValue().sum().intValue();
-    return this.rollDice().merge((List<Integer> diceSum) -> move(diceSum, scenario)).merge(cell -> this.followRule(cell, rolledDiceSum, scenario)).to(cell -> {
-      if(cell instanceof Win) {
-        return new Turn(new WinningPlayer(player.name));
-      }
-      return new Turn(new Player(player.name, cell));
-    });
+    return this.rollDice().merge((List<Integer> diceSum) -> move(diceSum, scenario))
+        .merge(cell -> this.followRule(cell, rolledDiceSum, scenario)).map(cell -> {
+          if (cell instanceof Win) {
+            return new Turn(new WinningPlayer(player.name));
+          }
+          return new Turn(new Player(player.name, cell));
+        });
   }
 
   boolean isPlayerWinInThisTurn() {
