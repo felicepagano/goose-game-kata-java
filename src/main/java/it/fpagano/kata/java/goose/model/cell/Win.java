@@ -2,7 +2,6 @@ package it.fpagano.kata.java.goose.model.cell;
 
 import static it.fpagano.kata.java.goose.Game.NUMBER_OF_CELLS;
 
-import java.util.function.Function;
 import java.util.function.IntFunction;
 
 public class Win implements Cell {
@@ -13,13 +12,16 @@ public class Win implements Cell {
     return WIN_INSTANCE;
   }
 
+  private Win() {
+  }
+
   @Override
   public int position() {
     return NUMBER_OF_CELLS;
   }
 
   @Override
-  public Function<Integer, Cell> rule(IntFunction<Cell> scenario) {
+  public IntFunction<Cell> rule(IntFunction<Cell> scenario) {
     return integer -> this;
   }
 

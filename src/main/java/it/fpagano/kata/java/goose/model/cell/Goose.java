@@ -1,20 +1,8 @@
 package it.fpagano.kata.java.goose.model.cell;
 
-import java.util.function.Function;
 import java.util.function.IntFunction;
 
-public class Goose implements Cell {
-
-  private final int position;
-
-  public Goose(int position) {
-    this.position = position;
-  }
-
-  @Override
-  public int position() {
-    return position;
-  }
+public record Goose(int position) implements Cell {
 
   @Override
   public String description() {
@@ -27,7 +15,7 @@ public class Goose implements Cell {
   }
 
   @Override
-  public Function<Integer, Cell> rule(IntFunction<Cell> scenario) {
+  public IntFunction<Cell> rule(IntFunction<Cell> scenario) {
     return diceSum -> scenario.apply(this.position + diceSum);
   }
 }

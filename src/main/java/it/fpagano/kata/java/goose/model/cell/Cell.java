@@ -1,6 +1,5 @@
 package it.fpagano.kata.java.goose.model.cell;
 
-import java.util.function.Function;
 import java.util.function.IntFunction;
 
 public interface Cell {
@@ -17,24 +16,25 @@ public interface Cell {
   }
 
   /**
-   * A function that represents the rule to apply where a player reach this cell.
-   * By default it return the same cell instance.
+   * A function that represents the rule to apply where a player reach this cell. By default it
+   * return the same cell instance. Identity.
+   *
    * @param scenario
    * @return
    */
-  default Function<Integer, Cell> rule(IntFunction<Cell> scenario) {
+  default IntFunction<Cell> rule(IntFunction<Cell> scenario) {
     return integer -> this;
   }
 
   /**
-   * Apply the {@link Cell#rule(IntFunction)} using the launched dice value as parameter.
-   * The scenario is used to know witch cell the user switch.
+   * Apply the {@link Cell#rule(IntFunction)} using the launched dice value as parameter. The
+   * scenario is used to know witch cell the user switch.
+   *
    * @param diceSum
    * @param scenario
    * @return
    */
-  default Cell followRule(int diceSum,
-      IntFunction<Cell> scenario) {
+  default Cell followRule(int diceSum, IntFunction<Cell> scenario) {
     return this.rule(scenario).apply((diceSum));
   }
 
